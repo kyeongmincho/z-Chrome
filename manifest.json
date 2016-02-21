@@ -1,0 +1,29 @@
+{
+  "manifest_version": 2,
+  "name": "__MSG_name__",
+  "version": "1.0.0",
+  "description": "__MSG_description__",
+  "author": "drzix",
+  "default_locale": "en",
+
+  "permissions": [
+    "tabs",
+    "history"
+  ],
+
+  "background": {
+    "scripts": [
+      "js/background.js"
+    ]
+  },
+
+  "commands": {
+    "z-Chrome_enable": {
+      "suggested_key": {
+        "default": "Alt+Z",
+        "mac": "Alt+Z"
+      },
+      "description": "Enable input to type commands in z-Chrome"
+    }
+  }
+}

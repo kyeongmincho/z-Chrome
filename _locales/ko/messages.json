@@ -1,0 +1,10 @@
+{
+    "name": {
+	"message": "z-Chrome",
+	"description": "This is the long name of the app in Chrome's Webstore"
+    },
+    "description": {
+	"message": "Dr.Z와 함께 효율적인 크롬 사용을 즐기시길",
+	"description": "This is the description of the app that must declared in manifest.json"
+    }
+}
