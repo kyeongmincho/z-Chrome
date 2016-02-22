@@ -1,29 +1,48 @@
 {
-  "manifest_version": 2,
-  "name": "__MSG_name__",
-  "version": "1.0.0",
-  "description": "__MSG_description__",
-  "author": "drzix",
-  "default_locale": "en",
+    "manifest_version": 2,
+    "name": "__MSG_name__",
+    "version": "1.0.0",
+    "description": "__MSG_description__",
+    "author": "drzix",
+    "default_locale": "en",
 
-  "permissions": [
-    "tabs",
-    "history"
-  ],
+    "permissions": [
+        "<all_urls>",
+        "tabs",
+        "history"
+    ],
 
-  "background": {
-    "scripts": [
-      "js/background.js"
-    ]
-  },
+    "browser_action": {
+    "default_title": "__MSG_name__",
+    "default_icon": "icon.png",
+    "default_popup": "html/popup.html"
+},
 
-  "commands": {
-    "z-Chrome_enable": {
-      "suggested_key": {
-        "default": "Alt+Z",
-        "mac": "Alt+Z"
-      },
-      "description": "Enable input to type commands in z-Chrome"
+    "background": {
+        "page": "html/popup.html"
+    },
+
+    "commands": {
+        "_execute_browser_action": {
+            "suggested_key": {
+                "default": "Alt+Z",
+                "mac": "Alt+Z"
+            },
+            "description": "Enable popup to type commands in z-Chrome"
+        },
+        "_execute_page_action": {
+            "suggested_key": {
+                "default": "Alt+Z",
+                "mac": "Alt+Z"
+            },
+            "description": "Enable popup to type commands in z-Chrome"
+        },
+        "z_Secret": {
+            "suggested_key": {
+                "default": "Alt+S",
+                "mac": "Alt+S"
+            },
+            "description": "Enable z-Secret"
+        }
     }
-  }
 }

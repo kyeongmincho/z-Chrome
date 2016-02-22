@@ -1,4 +1,4 @@
-function z_Secret(command) {
+function z_Secret() {
   // Deleting a log which shows visit to this url
   // and opening new secret tab to visit the url
 
@@ -20,4 +20,25 @@ function z_Secret(command) {
   });
 }
 
-chrome.commands.onCommand.addListener(z_Secret);
+all_commands = {
+    "z_Secret": z_Secret
+}
+
+chrome.commands.onCommand.addListener(function(command) {
+        // check if popup is activated
+    var activated_flag = chrome.extension.getViews({ type: "popup" });
+    if (activated_flag.length === 0)
+        return false;
+
+        // call function or wait for extended command
+    body = document.getElementById('z_body');
+    if (command in all_commands)
+    {
+        body.innerHTML = command;
+        all_commands[command]();
+    }
+    else
+    {
+        // TODO: define extended command and print the command
+    }
+});
