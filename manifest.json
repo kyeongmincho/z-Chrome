@@ -8,7 +8,8 @@
 
   "permissions": [
     "tabs",
-    "history"
+    "history",
+    "browsingData"
   ],
 
   "background": {
