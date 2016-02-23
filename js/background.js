@@ -43,8 +43,49 @@ function z_Secret() {
     });
 }
 
+function z_Search(){
+    chrome.tabs.query({}, function(tabs){
+        var calls = [];
+        var contextList = [];
+        var searchKeyword = "github";
+
+        tabs.forEach(function(tab){
+            calls.push(function(callback){
+                chrome.tabs.executeScript(tab.id, {
+                    code: "var text = document.documentElement.innerText; text"
+                }, function(resp){
+                    if(chrome.runtime.lastError){
+                        callback(null, null);
+                    }
+                    else{
+                        callback(null, {
+                            id: tab.id,
+                            title: tab.title,
+                            url: tab.url,
+                            text: resp[0]
+                        });
+                    }
+                });
+            });
+        });
+
+        async.parallel(calls, function(err, results){
+            var filteredList = results.filter(function(tab){
+                return tab !== null && (
+                        tab.title.indexOf(searchKeyword) >= 0
+                        || tab.url.indexOf(searchKeyword) >= 0
+                        || tab.text.indexOf(searchKeyword) >= 0
+                    );
+            });
+
+            console.log(filteredList);
+        });
+    });
+}
+
 all_commands = {
-    "z_Secret": z_Secret
+    "z_Secret": z_Secret,
+    "z_Search": z_Search
 };
 
 chrome.commands.onCommand.addListener(function(command) {
@@ -65,3 +106,4 @@ chrome.commands.onCommand.addListener(function(command) {
         // TODO: define extended command and print the command
     }
 });
+
