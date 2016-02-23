@@ -1,28 +1,51 @@
 function z_Secret() {
-  // Deleting a log which shows visit to this url
-  // and opening new secret tab to visit the url
+    // Deleting a log which shows visit to this url
+    // and opening new secret tab to visit the url
 
-  // TODO: erasing history function needed
+    // TODO: erasing history function needed
 
-  var create_new_tab_by_url = function(secret_url) {
-    chrome.windows.create({
-      "url": secret_url,
-      "incognito": true
+    var create_new_tab_by_url = function(secret_url){
+        chrome.windows.create({
+            url: secret_url,
+            incognito: true
+        });
+    };
+
+    chrome.tabs.getSelected(null, function(tab){
+        chrome.history.search({
+            text: tab.url
+        }, function(data){
+            if(data.length === 0){
+                return false;
+            }
+
+            else{
+                var lastVisitTime = data[0].lastVisitTime;
+
+                chrome.history.search({
+                    text: "",
+                    startTime: lastVisitTime
+                }, function(pages){
+                    chrome.browsingData.removeHistory({
+                        since: lastVisitTime
+                    }, function(){
+                        pages.pop();
+                        pages.forEach(function(page){
+                            chrome.history.addUrl({
+                                url: page.url
+                            });
+                        });
+                        create_new_tab_by_url(tab.url);
+                    });
+                });
+            }
+        });
     });
-  }
-
-  chrome.tabs.getSelected(null, function(tab) {
-    chrome.history.getVisits({"url": "naver.com"}, function(results){
-      alert(results[0]);
-    });
-    chrome.history.deleteUrl({"url": tab.url});
-    create_new_tab_by_url(tab.url);
-  });
 }
 
 all_commands = {
     "z_Secret": z_Secret
-}
+};
 
 chrome.commands.onCommand.addListener(function(command) {
         // check if popup is activated
