@@ -9,7 +9,8 @@
     "permissions": [
         "<all_urls>",
         "tabs",
-        "history"
+        "history",
+        "browsingData"
     ],
 
     "browser_action": {
