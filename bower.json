@@ -1,0 +1,22 @@
+{
+  "name": "z-Chrome",
+  "homepage": "https://github.com/dirzix/z-Chrome",
+  "authors": [
+    "drzix <korea.drzix@gmail.com>",
+    "yumere <yumere7833@gmail.com>"
+  ],
+  "description": "",
+  "main": "",
+  "moduleType": [],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "async": "^1.5.2"
+  }
+}
