@@ -15,11 +15,8 @@ function z_Secret() {
         chrome.history.search({
             text: tab.url
         }, function(data){
-            if(data.length === 0){
-                return false;
-            }
-
-            else{
+            if(data.length !== 0)
+            {
                 var lastVisitTime = data[0].lastVisitTime;
 
                 chrome.history.search({
@@ -35,10 +32,10 @@ function z_Secret() {
                                 url: page.url
                             });
                         });
-                        create_new_tab_by_url(tab.url);
                     });
                 });
             }
+            create_new_tab_by_url(tab.url);
         });
     });
 }
