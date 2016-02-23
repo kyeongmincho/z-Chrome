@@ -1,8 +1,10 @@
-function z_Secret() {
+function z_Secret(){
     // Deleting a log which shows visit to this url
     // and opening new secret tab to visit the url
 
-    // TODO: erasing history function needed
+    var close_tab = function(tab_id){
+        chrome.tabs.remove(tab_id);
+    }
 
     var create_new_tab_by_url = function(secret_url){
         chrome.windows.create({
@@ -11,40 +13,42 @@ function z_Secret() {
         });
     };
 
-    chrome.tabs.getSelected(null, function(tab){
+    var delete_history = function(tab_url){
         chrome.history.search({
-            text: tab.url
+            text: tab_url
         }, function(data){
-            if(data.length !== 0)
-            {
-                var lastVisitTime = data[0].lastVisitTime;
+            if(data.length !== 0){
+                var last_visit_time = data[0].lastVisitTime;
 
                 chrome.history.search({
                     text: "",
-                    startTime: lastVisitTime
+                    startTime: last_visit_time
                 }, function(pages){
-                    chrome.browsingData.removeHistory({
-                        since: lastVisitTime
-                    }, function(){
+                    chrome.browsingData.removeHistory({ since: last_visit_time }, function(){
                         pages.pop();
-                        pages.forEach(function(page){
-                            chrome.history.addUrl({
-                                url: page.url
-                            });
+                        pages.reverse().forEach(function(page){
+                            chrome.history.addUrl({ url: page.url });
                         });
                     });
                 });
             }
-            create_new_tab_by_url(tab.url);
         });
+    };
+
+    chrome.tabs.query({ active: true }, function(tab_list){
+        var tab_url = tab_list[0].url;
+
+        close_tab(tab_list[0].id);
+        delete_history(tab_url);
+        create_new_tab_by_url(tab_url);
     });
 }
 
-all_commands = {
+var all_commands = {
     "z_Secret": z_Secret
 };
 
-chrome.commands.onCommand.addListener(function(command) {
+chrome.commands.onCommand.addListener(function(command){
         // check if popup is activated
     var activated_flag = chrome.extension.getViews({ type: "popup" });
     if (activated_flag.length === 0)
@@ -52,13 +56,11 @@ chrome.commands.onCommand.addListener(function(command) {
 
         // call function or wait for extended command
     body = document.getElementById('z_body');
-    if (command in all_commands)
-    {
+    if (command in all_commands){
         body.innerHTML = command;
         all_commands[command]();
     }
-    else
-    {
+    else{
         // TODO: define extended command and print the command
     }
 });
