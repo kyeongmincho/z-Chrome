@@ -12,6 +12,7 @@ function z_Secret() {
     };
 
     chrome.tabs.getSelected(null, function(tab){
+        create_new_tab_by_url(tab.url);
         chrome.history.search({
             text: tab.url
         }, function(data){
@@ -35,7 +36,6 @@ function z_Secret() {
                                 url: page.url
                             });
                         });
-                        create_new_tab_by_url(tab.url);
                     });
                 });
             }
