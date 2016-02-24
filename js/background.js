@@ -35,7 +35,7 @@ function z_Secret(){
         });
     };
 
-    chrome.tabs.query({ active: true }, function(tab_list){
+    chrome.tabs.query({ active: true, lastFocusedWindow: true }, function(tab_list){
         var tab_url = tab_list[0].url;
 
         close_tab(tab_list[0].id);
