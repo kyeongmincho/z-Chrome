@@ -1,6 +1,8 @@
 function z_Secret(){
-    // Deleting a log which shows visit to this url
-    // and opening new secret tab to visit the url
+    /*
+     * Deleting a log which shows visit to this url
+     * and opening new secret tab to visit the url
+     */
 
     var close_tab = function(tab_id){
         chrome.tabs.remove(tab_id);
@@ -44,9 +46,54 @@ function z_Secret(){
     });
 }
 
+
+function z_TabSearch() {
+    /*
+     * Sending a query to background script
+     * and finding a string that user wants to search
+     */
+
+    var node = document.createElement('input');
+    var input_id = document.createAttribute('id');
+    input_id.value = 'search';
+    var input_type = document.createAttribute('type');
+    input_type.value = 'text';
+    var input_focus = document.createAttribute('autofocus');
+
+    node.setAttributeNode(input_id);
+    node.setAttributeNode(input_type);
+    node.setAttributeNode(input_focus);
+    body.appendChild(node);
+
+    // send message to every tabs; content_scripts
+    var send_message_to_every_tabs = function(search_str){
+        chrome.tabs.query({ currentWindow: true }, function(tabs){
+            tabs.forEach(function(each_tab){
+                chrome.tabs.sendMessage(each_tab.id, search_str, function(response){
+                    // TODO: handle the response
+                });
+            });
+        });
+    };
+
+    node.addEventListener("keydown", function(e){
+        var comp = document.getElementById(input_id.value);
+        send_message_to_every_tabs(comp.value);
+    });
+}
+
+
 var all_commands = {
-    "z_Secret": z_Secret
+    "z_Secret": {
+        "function": z_Secret,
+        "print": "z_Secret"
+    },
+    "z_TabSearch": {
+        "function": z_TabSearch,
+        "print": "z_TabSearch:"
+    }
 };
+
 
 chrome.commands.onCommand.addListener(function(command){
         // check if popup is activated
@@ -57,8 +104,8 @@ chrome.commands.onCommand.addListener(function(command){
         // call function or wait for extended command
     body = document.getElementById('z_body');
     if (command in all_commands){
-        body.innerHTML = command;
-        all_commands[command]();
+        body.innerHTML = all_commands[command]["print"];
+        all_commands[command]["function"]();
     }
     else{
         // TODO: define extended command and print the command

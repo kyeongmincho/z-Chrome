@@ -1,0 +1,25 @@
+*{
+    margin: 0;
+    padding: 0;
+    background: transparent;
+    color: #F9D788;
+    font: 1.1em monospace !important;
+}
+
+body{
+    max-width: 500px;
+    min-width: 400px;
+    min-height: 15px;
+    padding: 1px 5px 1px 5px;
+    background: #191818;
+}
+
+input{
+    margin-left: 10;
+    border: none;
+    color: #69CCBF;
+}
+
+input:focus{
+    outline: none;
+}
