@@ -44,8 +44,33 @@ function z_Secret(){
     });
 }
 
+//send a query to background script
+function z_TabSearch(str) {
+    var node = document.createElement('input');
+    var attr_input = document.createAttribute('id');
+    attr_input.value = 'test';
+    var attr = document.createAttribute('type');
+    attr.value = 'text';
+    node.setAttributeNode(attr);
+    node.setAttributeNode(attr_input);
+    body.appendChild(node);
+    node.addEventListener("keydown", function(e){
+        var comp = document.getElementById('test');
+        z_TabSearch(comp.value);
+    });
+    
+    //send message to every tabs; content_scripts
+    chrome.tabs.query({currentWindow: true}, function(tabs){
+        tabs.forEach(function(elem) {
+            chrome.tabs.sendMessage(elem.id, str, function(response) {
+            });
+        });
+    });
+}
+
 var all_commands = {
-    "z_Secret": z_Secret
+    "z_Secret": z_Secret,
+    "z_TabSearch": z_TabSearch
 };
 
 chrome.commands.onCommand.addListener(function(command){
