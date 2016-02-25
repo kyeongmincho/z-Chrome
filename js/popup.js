@@ -58,9 +58,11 @@ function z_TabSearch() {
     input_id.value = 'search';
     var input_type = document.createAttribute('type');
     input_type.value = 'text';
+    var input_focus = document.createAttribute('autofocus');
 
     node.setAttributeNode(input_id);
     node.setAttributeNode(input_type);
+    node.setAttributeNode(input_focus);
     body.appendChild(node);
 
     // send message to every tabs; content_scripts
@@ -82,8 +84,14 @@ function z_TabSearch() {
 
 
 var all_commands = {
-    "z_Secret": z_Secret,
-    "z_TabSearch": z_TabSearch
+    "z_Secret": {
+        "function": z_Secret,
+        "print": "z_Secret"
+    },
+    "z_TabSearch": {
+        "function": z_TabSearch,
+        "print": "z_TabSearch:"
+    }
 };
 
 
@@ -96,8 +104,8 @@ chrome.commands.onCommand.addListener(function(command){
         // call function or wait for extended command
     body = document.getElementById('z_body');
     if (command in all_commands){
-        body.innerHTML = command;
-        all_commands[command]();
+        body.innerHTML = all_commands[command]["print"];
+        all_commands[command]["function"]();
     }
     else{
         // TODO: define extended command and print the command
