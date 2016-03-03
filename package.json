@@ -1,0 +1,27 @@
+{
+  "name": "z-chrome",
+  "version": "1.0.0",
+  "description": "Use Chrome efficiently and hail to Doctor Z",
+  "scripts": {
+    "test": "xo"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/drzix/z-Chrome.git"
+  },
+  "keywords": [
+    "chrome",
+    "extension",
+    "tab",
+    "search",
+    "secret"
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/drzix/z-Chrome/issues"
+  },
+  "homepage": "https://github.com/drzix/z-Chrome#readme",
+  "dependencies": {
+    "xo": "^0.12.1"
+  }
+}
